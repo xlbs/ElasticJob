@@ -10,7 +10,7 @@ import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperConfiguration;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Driver;
 import java.util.Properties;
@@ -21,10 +21,13 @@ public class TestJobMain {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 
-        try(FileReader reader = new FileReader(System.getProperty("appProps"))) {
-            properties.load(reader);
-            System.getProperties().putAll(properties);
-        }
+//        try(FileReader reader = new FileReader(System.getProperty("TestJob/app.properties"))) {
+//            properties.load(reader);
+//            System.getProperties().putAll(properties);
+//        }
+        FileInputStream in = new FileInputStream("TestJob/app.properties");
+        properties.load(in);
+        in.close();
 
         SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
         dataSource.setDriverClass((Class<? extends Driver>) Class.<Driver>forName(properties.getProperty("r_jdbc.driverClass")));
