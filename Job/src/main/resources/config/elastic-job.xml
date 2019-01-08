@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:reg="http://www.dangdang.com/schema/ddframe/reg"
+	   xmlns:job="http://www.dangdang.com/schema/ddframe/job"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.dangdang.com/schema/ddframe/reg
+       http://www.dangdang.com/schema/ddframe/reg/reg.xsd
+       http://www.dangdang.com/schema/ddframe/job
+       http://www.dangdang.com/schema/ddframe/job/job.xsd
+	   http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context.xsd ">
+                        
+	<reg:zookeeper server-lists="localhost:2181" id="goPayCenter"
+		namespace="xielbs" base-sleep-time-milliseconds="1000"
+		max-retries="3" />
+
+	<!-- 作业配置A -->
+ 	<job:simple id="JobA" sharding-total-count="1"
+		cron="1 * * * * ?" registry-center-ref="goPayCenter" class="com.xlbs.job.joba.JobA" description="作业配置A" />
+
+	<!-- 作业配置B -->
+ 	<!--<job:simple id="simpleJobB" sharding-total-count="2"-->
+		<!--cron="10 * * * * ?" registry-center-ref="goPayCenter" class="newgo.job.SimpleJobB"-->
+		<!--sharding-item-parameters="0=test1,1=test2" overwrite="true" description="结算批量处理"-->
+		<!--job-exception-handler="newgo.handler.MyJobExceptionHandler"/>-->
+    
+    <!-- 流数据作业 -->
+ 	<!--<job:dataflow sharding-total-count="1" cron="2 * * * * ?"-->
+		<!--registry-center-ref="goPayCenter" id="dataFlowJobEven" class="newgo.job.DataFlowJobEven" streaming-process="false" overwrite="true" description="查询偶数id数据"/>-->
+	<!--<job:dataflow sharding-total-count="1" cron="2 * * * * ?"-->
+		<!--registry-center-ref="goPayCenter" id="dataFlowJobOdd" class="newgo.job.DataFlowJobOdd" streaming-process="false" overwrite="true" description="查询奇数id数据"/>-->
+
+	<!-- 数据库查询行业作业A ： 根据查询任务分片，分别查询奇偶行列 -->
+  	<!--<job:simple id="elasIndustryJob" sharding-total-count="2" cron="2 * * * * ?"-->
+	<!--sharding-item-parameters="0=even,1=odd"-->
+	<!--registry-center-ref="goPayCenter" class="newgo.job.IndustryOperatorJob"-->
+	<!--job-exception-handler="newgo.handler.MyJobExceptionHandler"/>-->
+
+   	 <!--数据库查询行业作业B ： 通过mybatis映射 -->
+	<!--<job:simple id="mybatisIndustryJob" sharding-total-count="1" cron="1 * * * * ?"-->
+	<!--registry-center-ref="goPayCenter" class="newgo.job.MybatisIndustryJob"-->
+	<!--job-exception-handler="newgo.handler.MyJobExceptionHandler"/>-->
+</beans>

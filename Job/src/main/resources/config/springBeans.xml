@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context.xsd
+                        ">
+	<context:component-scan base-package="com.xlbs.job" />
+	<!--<context:property-placeholder location="classpath:/conf/jdbc.properties" />-->
+
+	<!-- 配置数据源 使用的是alibaba的数据源 也可以使用 dbcp -->
+	<!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >-->
+		<!--&lt;!&ndash; 配置基本的参数 &ndash;&gt;-->
+		<!--<property name="url" value="${db.url}" />-->
+		<!--<property name="username" value="${db.username.des}" />-->
+		<!--<property name="password" value="${db.password.des}" />-->
+
+	<!--</bean>-->
+
+	<!-- 配置SqlSessionFactory mybatis文件配置 扫描所有的mapper文件 -->
+	<!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+		<!--&lt;!&ndash; 数据源 &ndash;&gt;-->
+		<!--<property name="dataSource" ref="dataSource" />-->
+		<!--&lt;!&ndash; 加载mybatis的配置文件 &ndash;&gt;-->
+<!--&lt;!&ndash; 		<property name="configLocation" value="classpath:/config/mybatis/mybatisContext.xml" /> &ndash;&gt;-->
+		<!--<property name="mapperLocations" value="classpath:/mapper/*.xml" />-->
+	<!--</bean>-->
+
+
+	<!-- mapper扫描器 spring 与mybatis整合配置 -->
+	<!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
+		<!--<property name="basePackage" value="newgo.dao" />-->
+		<!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />-->
+	<!--</bean>-->
+
+
+	<!-- 定义事务管理器 对mybatis操作数据库的控制，spring使用jdbc的事务控制 -->
+	<!--<bean id="transactionManager"-->
+		<!--class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
+		<!--&lt;!&ndash; 数据源 dataSource在applicationContext-dao.xml文件中配置 &ndash;&gt;-->
+		<!--<property name="dataSource" ref="dataSource" />-->
+	<!--</bean>-->
+		
+	<import resource="classpath:config/elastic-job.xml"/>
+   	<import resource="classpath:config/spring-batch.xml"/>
+</beans>
