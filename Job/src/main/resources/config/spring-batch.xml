@@ -8,23 +8,35 @@
 	   http://www.springframework.org/schema/batch/spring-batch.xsd ">
 
 	<batch:job id="jobA" restartable="true">
-		<batch:step id="jobAStep">
+		<batch:step id="step_1">
 			<batch:tasklet>
-				<batch:chunk reader="jobAReader" processor="jobAProcessor" writer="jobAWriter" commit-interval="50"/>
+				<batch:chunk reader="step1Reader" processor="step1Processor" writer="step1Writer" commit-interval="50"/>
 			</batch:tasklet>
 		</batch:step>
+
+		<!--<batch:step id="step_2">-->
+			<!--<batch:tasklet>-->
+				<!--<batch:chunk reader="step2Reader" processor="step2Processor" writer="step2Writer" commit-interval="50"/>-->
+			<!--</batch:tasklet>-->
+		<!--</batch:step>-->
 	</batch:job>
-	<bean id="jobAReader" class="com.xlbs.job.joba.JobAReader"/>
-	<bean id="jobAProcessor" class="com.xlbs.job.joba.JobAProcessor"/>
-	<bean id="jobAWriter"  class="com.xlbs.job.joba.JobAWriter"/>
+	<bean id="step1Reader" class="com.xlbs.job.joba.JobAReader"/>
+	<bean id="step1Processor" class="com.xlbs.job.joba.JobAProcessor"/>
+	<bean id="step1Writer"  class="com.xlbs.job.joba.JobAWriter"/>
+
+	<bean id="step2Reader" class="com.xlbs.job.joba.Step2Reader"/>
+	<bean id="step2Processor" class="com.xlbs.job.joba.Step2Processor"/>
+	<bean id="step2Writer"  class="com.xlbs.job.joba.Step2Writer"/>
 
 	<!-- 任务加载器 -->
 	<bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
 		<property name="jobRepository" ref="jobRepository"/>
 	</bean>
 	<!-- 任务仓库 -->
-	<bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean"/>
-
+	<bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
+		<property name="transactionManager" ref="transactionManager"/>
+	</bean>
+	<!-- 事务管理器 -->
 	<bean id="transactionManager" class="org.springframework.batch.support.transaction.ResourcelessTransactionManager"/>
 
 </beans>

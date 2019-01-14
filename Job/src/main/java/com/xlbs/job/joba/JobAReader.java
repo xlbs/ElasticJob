@@ -5,12 +5,14 @@ import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
 
-public class JobAReader implements ItemReader {
+public class JobAReader implements ItemReader<DeviceCommand> {
 
-    public Object read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-        System.out.println("ItemReader");
-        return null;
+
+    public DeviceCommand read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+        System.out.println("JobAReader");
+        DeviceCommand deviceCommand = new DeviceCommand();
+        deviceCommand.setId("856");
+        deviceCommand.setStatus("测试数据");
+        return deviceCommand;
     }
-
-
 }
